@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tourist Wristband Alert System</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+    }
+
+    header {
+      background-color: #2d3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    .status-board {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .band {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      width: 220px;
+      transition: 0.3s ease;
+    }
+
+    .band.alert {
+      border-left: 6px solid red;
+      background-color: #ffe6e6;
+    }
+
+    .band h3 {
+      margin-top: 0;
+    }
+
+    .band p {
+      margin: 5px 0;
+    }
+
+    .disaster-alert {
+      background-color: #ff4d4d;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: bold;
+      display: none;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Wristband Alert Dashboard</h1>
+  <p>Monitoring tourist safety during natural disasters</p>
+</header>
+
+<main>
+  <div class="disaster-alert" id="disasterAlert">
+    ⚠️ Natural Disaster Detected! Help is being called automatically!
+  </div>
+
+  <h2>Wristband Status</h2>
+  <div class="status-board" id="statusBoard">
+    <!-- Wristband statuses will be populated here -->
+  </div>
+
+  <div class="footer">
+    &copy; 2025 Tourist Safety System
+  </div>
+</main>
+
+<script>
+  // Simulated wristbands
+  const wristbands = [
+    { id: 1, name: "Tourist 1", location: "Beach", status: "OK" },
+    { id: 2, name: "Tourist 2", location: "Trail", status: "OK" },
+    { id: 3, name: "Tourist 3", location: "Mountain", status: "OK" },
+    { id: 4, name: "Tourist 4", location: "City Center", status: "OK" }
+  ];
+
+  const statusBoard = document.getElementById("statusBoard");
+  const disasterAlert = document.getElementById("disasterAlert");
+
+  function renderWristbands() {
+    statusBoard.innerHTML = '';
+    wristbands.forEach(band => {
+      const div = document.createElement('div');
+      div.className = 'band' + (band.status === 'HELP' ? ' alert' : '');
+      div.innerHTML = `
+        <h3>${band.name}</h3>
+        <p><strong>Location:</strong> ${band.location}</p>
+        <p><strong>Status:</strong> ${band.status}</p>
+      `;
+      statusBoard.appendChild(div);
+    });
+  }
+
+  function simulateDisasterEvent() {
+    // Randomly simulate a natural disaster
+    const disasterHappens = Math.random() < 0.2; // 20% chance
+
+    if (disasterHappens) {
+      disasterAlert.style.display = 'block';
+
+      // Randomly select wristbands that need help
+      wristbands.forEach(band => {
+        if (Math.random() < 0.5) {
+          band.status = "HELP";
+          // Auto-call for help (simulation)
+          console.log(`Calling for help for ${band.name} at ${band.location}`);
+        }
+      });
+
+      renderWristbands();
+
+      setTimeout(() => {
+        disasterAlert.style.display = 'none';
+      }, 5000);
+    }
+  }
+
+  // Initial render
+  renderWristbands();
+
+  // Simulate disaster check every 10 seconds
+  setInterval(() => {
+    simulateDisasterEvent();
+  }, 10000);
+</script>
+
+</body>
+</html>
